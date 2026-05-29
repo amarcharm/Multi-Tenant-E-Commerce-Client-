@@ -5,8 +5,6 @@ import { setCredentials } from '../../store/slices/authSlice';
 import axiosInstance from '../../api/axiosInstance';
 
 export default function Register() {
-
-  // These hold whatever the user types in the form
   const [name, setName]         = useState('');
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
@@ -14,135 +12,100 @@ export default function Register() {
   const [error, setError]       = useState('');
   const [loading, setLoading]   = useState(false);
 
-  const navigate  = useNavigate(); // used to redirect after register
-  // const dispatch  = useDispatch(); // used to save user to Redux
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleRegister = async (e) => {
-    e.preventDefault(); // stops page from refreshing on form submit
+    e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
-      const res = await axiosInstance.post('/auth/register', {
-        name,
-        email,
-        password,
-        role,
-      });
-
-      // Save token and user into Redux store
-      dispatch(setCredentials({
-        token: res.data.token,
-        user:  res.data.user,
-      }));
-
-      // Redirect based on role
+      const res = await axiosInstance.post('/auth/register', { name, email, password, role });
+      dispatch(setCredentials({ token: res.data.token, user: res.data.user }));
       const userRole = res.data.user.role;
       if (userRole === 'superadmin') navigate('/admin/dashboard');
       else if (userRole === 'vendor') navigate('/vendor/dashboard');
       else navigate('/');
-
     } catch (err) {
-      // Show the error message from the backend
-      setError(err.response?.data?.message || 'Registration failed. Try again.');
+      setError(err.response?.data?.message || 'Registration failed');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-8 rounded-xl shadow w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white rounded-2xl shadow p-8 w-full max-w-sm">
 
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-          Create Account
-        </h2>
+        {/* Brand */}
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold text-blue-600">ShopHub</h1>
+          <p className="text-gray-500 text-sm mt-1">Create a new account</p>
+        </div>
 
-        {/* Error message box — only shows if there is an error */}
+        {/* Error */}
         {error && (
-          <p className="bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm">
+          <p className="bg-red-50 text-red-600 text-sm text-center px-4 py-2 rounded-lg mb-4">
             {error}
           </p>
         )}
 
-        <form onSubmit={handleRegister} className="space-y-4">
-
-          {/* Name field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Full Name
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              placeholder="Your full name"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-          </div>
-
-          {/* Email field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="you@example.com"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-          </div>
-
-          {/* Password field */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Min 6 characters"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-          </div>
+        {/* Form — all inputs centered with fixed width */}
+        <form onSubmit={handleRegister} className="flex flex-col items-center gap-3">
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            placeholder="Full name"
+            className="w-64 px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-gray-50"
+          />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            placeholder="Email address"
+            className="w-64 px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-gray-50"
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            placeholder="Password"
+            className="w-64 px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-gray-50"
+          />
 
           {/* Role dropdown */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Register as
-            </label>
+          <div className="w-64">
+            <p className="text-xs text-gray-400 mb-1 ml-1">Register as</p>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-gray-50"
             >
               <option value="customer">Customer</option>
               <option value="vendor">Vendor</option>
             </select>
           </div>
 
-          {/* Submit button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 transition font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-64 py-3 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed mt-1"
           >
-            {loading ? 'Creating account...' : 'Create Account'}
+            {loading ? 'Creating account...' : 'Create account'}
           </button>
-
         </form>
 
-        {/* Link to Login */}
-        <p className="text-center text-sm mt-4 text-gray-600">
+        {/* Divider */}
+        <div className="border-t border-gray-200 my-5" />
+
+        <p className="text-center text-sm text-gray-500">
           Already have an account?{' '}
-          <Link to="/login" className="text-purple-600 hover:underline font-medium">
-            Login here
+          <Link to="/login" className="text-blue-600 font-semibold hover:underline">
+            Log in
           </Link>
         </p>
 
