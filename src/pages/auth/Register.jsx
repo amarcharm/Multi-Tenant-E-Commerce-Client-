@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../store/slices/authSlice';
 import axiosInstance from '../../api/axiosInstance';
 
+
 export default function Register() {
   const [name, setName]         = useState('');
   const [email, setEmail]       = useState('');
@@ -34,82 +35,150 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white rounded-2xl shadow p-8 w-full max-w-sm">
+    <>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');`}</style>
 
-        {/* Brand */}
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-blue-600">ShopHub</h1>
-          <p className="text-gray-500 text-sm mt-1">Create a new account</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-[#f4f3ef] p-4 font-[DM_Sans,sans-serif]">
+        <div className="flex w-full max-w-[860px] min-h-[580px] rounded-[20px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.12)]">
 
-        {/* Error */}
-        {error && (
-          <p className="bg-red-50 text-red-600 text-sm text-center px-4 py-2 rounded-lg mb-4">
-            {error}
-          </p>
-        )}
+          {/* ── Left panel ── */}
+          <div className="relative hidden md:flex w-[42%] bg-[#1a1a2e] flex-col justify-between p-10 overflow-hidden">
+            {/* Decorative circles */}
+            <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-[rgba(99,99,255,0.12)] pointer-events-none" />
+            <div className="absolute -bottom-16 -left-10 w-52 h-52 rounded-full bg-[rgba(99,99,255,0.08)] pointer-events-none" />
 
-        {/* Form — all inputs centered with fixed width */}
-        <form onSubmit={handleRegister} className="flex flex-col items-center gap-3">
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            placeholder="Full name"
-            className="w-64 px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-gray-50"
-          />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder="Email address"
-            className="w-64 px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-gray-50"
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            placeholder="Password"
-            className="w-64 px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-gray-50"
-          />
-
-          {/* Role dropdown */}
-          <div className="w-64">
-            <p className="text-xs text-gray-400 mb-1 ml-1">Register as</p>
-            <select
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-gray-50"
-            >
-              <option value="customer">Customer</option>
-              <option value="vendor">Vendor</option>
-            </select>
+            {/* Brand */}
+            <div className="relative z-10">
+              <h1 className="text-[2rem] font-bold text-white tracking-tight font-[Playfair_Display,serif]">
+                ShopHub
+              </h1>
+              <p className="mt-1.5 text-[0.72rem] text-white/40 uppercase tracking-widest">
+                Your marketplace, simplified
+              </p>
+            </div>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-64 py-3 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed mt-1"
-          >
-            {loading ? 'Creating account...' : 'Create account'}
-          </button>
-        </form>
+          {/* ── Right panel ── */}
+          <div className="flex-1 bg-black flex flex-col justify-center px-8 py-10">
+            <h2 className="font-[Playfair_Display,serif] text-[1.6rem] font-bold text-[#1a1a2e] mb-1">
+              Create an account
+            </h2>
+            <p className="text-[0.82rem] text-gray-400 mb-6">
+              Join ShopHub and start selling or shopping today
+            </p>
 
-        {/* Divider */}
-        <div className="border-t border-gray-200 my-5" />
+        
+            {/* Divider */}
+            <div className="flex items-center gap-3 mb-5">
+              <div className="flex-1 h-px bg-gray-100" />
+              <span className="text-[0.72rem] text-gray-300 whitespace-nowrap">
+                or register with email
+              </span>
+              <div className="flex-1 h-px bg-gray-100" />
+            </div>
 
-        <p className="text-center text-sm text-gray-500">
-          Already have an account?{' '}
-          <Link to="/login" className="text-blue-600 font-semibold hover:underline">
-            Log in
-          </Link>
-        </p>
+            {/* Error */}
+            {error && (
+              <div className="mb-4 px-3 py-2 rounded-lg bg-red-50 border border-red-200 text-red-600 text-[0.8rem] text-center">
+                {error}
+              </div>
+            )}
 
+            {/* Form */}
+            <form onSubmit={handleRegister} className="flex flex-col gap-3.5">
+
+              {/* Full name */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[0.72rem] font-medium text-gray-400 uppercase tracking-wider">
+                  Full name
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Anbu Kumar"
+                  required
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-[0.88rem] text-[#1a1a2e] placeholder-gray-500 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:bg-white transition-all"
+                />
+              </div>
+
+              {/* Email */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[0.72rem] font-medium text-gray-400 uppercase tracking-wider">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-[0.88rem] text-[#1a1a2e] placeholder-gray-500 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:bg-white transition-all"
+                />
+              </div>
+
+              {/* Password */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[0.72rem] font-medium text-gray-400 uppercase tracking-wider">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-[0.88rem] text-[#1a1a2e] placeholder-gray-500 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 focus:bg-white transition-all"
+                />
+              </div>
+
+              {/* Role selector */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[0.72rem] font-medium text-gray-400 uppercase tracking-wider">
+                  Register as
+                </label>
+                <div className="flex gap-2">
+                  {['customer', 'vendor'].map((r) => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => setRole(r)}
+                      className={`flex-1 py-2.5 rounded-xl border text-[0.82rem] font-medium capitalize transition-all cursor-pointer ${
+                        role === r
+                          ? 'bg-[#1a1a2e] border-[#1a1a2e] text-white'
+                          : 'bg-gray-50 border-gray-200 text-gray-400 hover:border-gray-300 hover:bg-gray-100'
+                      }`}
+                    >
+                      {r === 'customer' ? '🛍 Customer' : '🏪 Vendor'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full mt-1 py-3 rounded-xl bg-[#1a1a2e] text-white text-[0.88rem] font-medium tracking-wide hover:bg-[#2d2d5e] active:scale-[0.99] transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {loading ? 'Creating account...' : 'Create account'}
+              </button>
+            </form>
+
+            {/* Login link */}
+            <p className="mt-5 text-center text-[0.78rem] text-gray-400">
+              Already have an account?{' '}
+              <Link
+                to="/login"
+                className="text-indigo-500 font-medium hover:underline"
+              >
+                Sign in
+              </Link>
+            </p>
+          </div>
+
+        </div>
       </div>
-    </div>
+    </>
   );
 }
