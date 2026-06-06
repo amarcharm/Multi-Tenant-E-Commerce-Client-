@@ -16,16 +16,17 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray text-white">
 
       {/* Navbar */}
-      <nav className="flex items-center justify-between px-8 py-4 border-b border-gray-100">
+      <div className="border-b border-gray-100 w-full">
+        <nav className="flex items-center justify-between px-8 py-4 border-b border-gray-100 max-w-7xl mx-auto w-full">
         <span className="text-xl font-semibold text-blue-600">ShopHub</span>
         <div className="hidden md:flex items-center gap-8">
-          <span className="text-sm text-gray-500 cursor-pointer hover:text-gray-800">Home</span>
-          <span className="text-sm text-gray-500 cursor-pointer hover:text-gray-800">Stores</span>
-          <span className="text-sm text-gray-500 cursor-pointer hover:text-gray-800">Products</span>
-          <span className="text-sm text-gray-500 cursor-pointer hover:text-gray-800">About</span>
+          <span className="text-sm text-gray-200 cursor-pointer hover:text-gray-800">Home</span>
+          <span className="text-sm text-gray-200 cursor-pointer hover:text-gray-800">Stores</span>
+          <span className="text-sm text-gray-200 cursor-pointer hover:text-gray-800">Products</span>
+          <span className="text-sm text-gray-200 cursor-pointer hover:text-gray-800">About</span>
         </div>
         <div className="flex items-center gap-3">
           {user ? (
@@ -39,7 +40,7 @@ export default function Home() {
             <>
               <Link
                 to="/login"
-                className="px-4 py-2 border border-gray-200 text-sm rounded-lg text-gray-700 hover:bg-gray-50 transition"
+                className="px-4 py-2 border border-gray-200 text-sm rounded-lg text-gray-300 hover:bg-gray-50 transition"
               >
                 Log in
               </Link>
@@ -53,19 +54,21 @@ export default function Home() {
           )}
         </div>
       </nav>
+      </div>
+
 
       {/* Hero */}
-      <section className="text-center px-6 py-20 border-b border-gray-100">
+      <section className="text-center px-6 py-16 border-b border-gray-100 flex flex-col items-center">
         <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 text-xs px-3 py-1.5 rounded-full mb-6">
           <span>✦</span>
           <span>Multi-vendor e-commerce platform</span>
         </div>
-        <h1 className="text-5xl font-semibold text-gray-900 leading-tight max-w-2xl mx-auto mb-5">
+        <h1 className="text-4xl font-semibold text-gray-900 leading-tight max-w-2xl mx-auto mb-5 text-center">
           Your store.{' '}
           <span className="text-blue-600">Your brand.</span>{' '}
           One platform.
         </h1>
-        <p className="text-gray-500 text-base max-w-md mx-auto mb-10 leading-relaxed">
+        <p className="text-gray-500 text-base max-w-md mx-auto mb-10 leading-relaxed text-center">
           ShopHub lets vendors launch their online store in minutes. Customers
           discover and shop from hundreds of stores — all in one place.
         </p>
@@ -76,13 +79,13 @@ export default function Home() {
           >
             Start selling today
           </button>
-          <button className="px-7 py-3 border border-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-50 transition">
+          <button className="px-7 py-3 border border-gray-200 text-gray-00 text-sm rounded-lg hover:bg-gray-50 transition">
             Browse stores
           </button>
         </div>
 
         {/* Stats */}
-        <div className="flex justify-center gap-16 mt-16 flex-wrap">
+        <div className="flex justify-center gap-12 mt-12 flex-wrap w-full">
           {[
             { num: '500+', label: 'Active stores' },
             { num: '12k+', label: 'Products listed' },
@@ -90,7 +93,7 @@ export default function Home() {
             { num: '99%',  label: 'Uptime' },
           ].map((s) => (
             <div key={s.label} className="text-center">
-              <p className="text-2xl font-semibold text-gray-900">{s.num}</p>
+              <p className="text-2xl font-semibold text-gray-300">{s.num}</p>
               <p className="text-xs text-gray-400 mt-1">{s.label}</p>
             </div>
           ))}
