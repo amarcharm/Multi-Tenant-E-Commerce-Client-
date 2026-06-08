@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/auth/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
+import CreateStore from './pages/vendor/CreateStore';
 
 export default function App() {
   return (
@@ -9,6 +10,13 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Home />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/vendor/create-store" element={
+            <ProtectedRoute allowedRoles={['vendor']}>
+            <CreateStore />
+            </ProtectedRoute>
+               }
+/>
     </Routes>
   );
 }
+
