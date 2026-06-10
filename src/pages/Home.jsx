@@ -7,8 +7,8 @@ export default function Home() {
 
   const handleGetStarted = () => {
     if (user) {
-      if (user.role === 'vendor') navigate('/vendor/dashboard');
-      else if (user.role === 'superadmin') navigate('/admin/dashboard');
+      if (user.role === 'superadmin') navigate('/admin/dashboard');
+      else if (user.role === 'vendor') navigate('/vendor/dashboard');
       else navigate('/');
     } else {
       navigate('/register');
@@ -16,76 +16,55 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="bg-[#0f0e1a] min-h-screen text-white font-sans">
 
       {/* Navbar */}
-      <div className="border-b border-gray-100 w-full">
-        <nav className="flex items-center justify-between px-8 py-4 border-b border-gray-100 max-w-7xl mx-auto w-full">
-        <span className="text-xl font-semibold text-blue-600">ShopHub</span>
-        <div className="hidden md:flex items-center gap-8">
-          <span className="text-sm text-gray-200 cursor-pointer hover:text-gray-800">Home</span>
-          <span className="text-sm text-gray-200 cursor-pointer hover:text-gray-800">Stores</span>
-          <span className="text-sm text-gray-200 cursor-pointer hover:text-gray-800">Products</span>
-          <span className="text-sm text-gray-200 cursor-pointer hover:text-gray-800">About</span>
+      <nav className="flex items-center justify-between px-10 py-5 border-b border-white/[0.07]">
+        <span className="text-xl font-bold tracking-tight">ShopHub</span>
+        <div className="hidden md:flex gap-7">
+          {['Home','Stores','Products','About'].map((l) => (
+            <span key={l} className="text-sm text-white/50 cursor-pointer hover:text-white transition">{l}</span>
+          ))}
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex gap-3">
           {user ? (
-            <button
-              onClick={handleGetStarted}
-              className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition"
-            >
-              Go to dashboard
+            <button onClick={handleGetStarted} className="px-5 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition">
+              Dashboard
             </button>
           ) : (
             <>
-              <Link
-                to="/login"
-                className="px-4 py-2 border border-gray-200 text-sm rounded-lg text-gray-300 hover:bg-gray-50 transition"
-              >
+              <Link to="/login" className="px-5 py-2 border border-white/15 text-white/70 text-sm rounded-xl hover:bg-white/10 transition no-underline">
                 Log in
               </Link>
-              <Link
-                to="/register"
-                className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition"
-              >
+              <Link to="/register" className="px-5 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition no-underline">
                 Get started
               </Link>
             </>
           )}
         </div>
       </nav>
-      </div>
 
-
-      {/* Hero */}
-      <section className="text-center px-6 py-16 border-b border-gray-100 flex flex-col items-center">
-        <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 text-xs px-3 py-1.5 rounded-full mb-6">
-          <span>✦</span>
-          <span>Multi-vendor e-commerce platform</span>
+      {/* Hero — flex + items-center forces centering */}
+      <section className="flex flex-col items-center text-center px-6 pt-20 pb-16 border-b border-white/[0.07]">
+        <div className="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 text-xs px-4 py-1.5 rounded-full mb-6">
+          ✦ Multi-vendor marketplace platform
         </div>
-        <h1 className="text-4xl font-semibold text-gray-900 leading-tight max-w-2xl mx-auto mb-5 text-center">
-          Your store.{' '}
-          <span className="text-blue-600">Your brand.</span>{' '}
-          One platform.
+        <h1 className="text-4xl font-bold leading-tight max-w-xl mx-auto mb-5 tracking-tight text-center">
+          Your marketplace,{' '}
+          <span className="text-indigo-400">simplified.</span>
         </h1>
-        <p className="text-gray-500 text-base max-w-md mx-auto mb-10 leading-relaxed text-center">
-          ShopHub lets vendors launch their online store in minutes. Customers
-          discover and shop from hundreds of stores — all in one place.
+        <p className="text-sm text-white/45 max-w-sm text-center mb-9 leading-relaxed">
+          Launch your store in minutes. Reach thousands of customers without the technical overhead.
         </p>
-        <div className="flex items-center justify-center gap-4 flex-wrap">
-          <button
-            onClick={handleGetStarted}
-            className="px-7 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-          >
+        <div className="flex gap-3 justify-center flex-wrap">
+          <button onClick={handleGetStarted} className="px-8 py-3 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition">
             Start selling today
           </button>
-          <button className="px-7 py-3 border border-gray-200 text-gray-00 text-sm rounded-lg hover:bg-gray-50 transition">
-            Browse stores
+          <button className="px-8 py-3 bg-white/[0.06] text-white/70 border border-white/10 text-sm rounded-xl hover:bg-white/10 transition">
+            Browse stores →
           </button>
         </div>
-
-        {/* Stats */}
-        <div className="flex justify-center gap-12 mt-12 flex-wrap w-full">
+        <div className="flex justify-center gap-14 mt-14 flex-wrap">
           {[
             { num: '500+', label: 'Active stores' },
             { num: '12k+', label: 'Products listed' },
@@ -93,46 +72,42 @@ export default function Home() {
             { num: '99%',  label: 'Uptime' },
           ].map((s) => (
             <div key={s.label} className="text-center">
-              <p className="text-2xl font-semibold text-gray-300">{s.num}</p>
-              <p className="text-xs text-gray-400 mt-1">{s.label}</p>
+              <div className="text-2xl font-bold">{s.num}</div>
+              <div className="text-xs text-white/35 mt-1">{s.label}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* Features */}
-      <section className="px-8 py-16 border-b border-gray-100">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-            Everything you need to sell online
-          </h2>
-          <p className="text-sm text-gray-400">
-            Built for vendors who want to focus on their products, not the tech.
-          </p>
+      <section className="flex flex-col items-center px-6 py-16 border-b border-white/[0.07]">
+        <div className="text-center mb-9">
+          <p className="text-2xl font-bold mb-2">Everything you need to sell</p>
+          <p className="text-sm text-white/40">Built for vendors who want results, not complexity.</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-3xl">
           {[
-            { icon: '🏪', title: 'Your own storefront',    desc: 'Set up your branded store with logo, description and products.' },
-            { icon: '🔒', title: 'Secure payments',        desc: 'Stripe-powered checkout with encrypted transactions every time.' },
-            { icon: '📊', title: 'Sales analytics',        desc: 'Track revenue, orders and top products from your dashboard.' },
-            { icon: '📦', title: 'Inventory management',   desc: 'Manage stock levels and get notified when items run low.' },
+            { icon: '🏪', title: 'Your storefront', desc: 'Branded store page with logo and products.' },
+            { icon: '🔒', title: 'Secure payments', desc: 'Stripe-powered encrypted checkout.' },
+            { icon: '📊', title: 'Sales analytics', desc: 'Track revenue and top products live.' },
+            { icon: '📦', title: 'Inventory',        desc: 'Manage stock with low-stock alerts.' },
           ].map((f) => (
-            <div key={f.title} className="border border-gray-100 rounded-xl p-5 hover:border-blue-100 hover:bg-blue-50 transition">
-              <div className="text-2xl mb-3">{f.icon}</div>
-              <p className="text-sm font-medium text-gray-800 mb-2">{f.title}</p>
-              <p className="text-xs text-gray-400 leading-relaxed">{f.desc}</p>
+            <div key={f.title} className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-5 hover:border-indigo-500/50 transition">
+              <div className="w-9 h-9 rounded-xl bg-indigo-500/20 flex items-center justify-center text-base mb-3">{f.icon}</div>
+              <p className="text-sm font-semibold mb-1.5">{f.title}</p>
+              <p className="text-xs text-white/40 leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Categories */}
-      <section className="px-8 py-16 border-b border-gray-100">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Browse by category</h2>
-          <p className="text-sm text-gray-400">Find exactly what you are looking for.</p>
+      <section className="flex flex-col items-center px-6 py-16 border-b border-white/[0.07]">
+        <div className="text-center mb-9">
+          <p className="text-2xl font-bold mb-2">Browse by category</p>
+          <p className="text-sm text-white/40">Find exactly what you are looking for.</p>
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4 max-w-3xl mx-auto">
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 w-full max-w-lg">
           {[
             { icon: '👗', name: 'Fashion' },
             { icon: '💻', name: 'Electronics' },
@@ -141,72 +116,57 @@ export default function Home() {
             { icon: '📚', name: 'Books' },
             { icon: '🏋️', name: 'Sports' },
           ].map((c) => (
-            <div
-              key={c.name}
-              className="bg-gray-50 rounded-xl p-4 text-center cursor-pointer hover:bg-blue-50 hover:border-blue-100 border border-transparent transition"
-            >
-              <div className="text-2xl mb-2">{c.icon}</div>
-              <p className="text-xs font-medium text-gray-700">{c.name}</p>
+            <div key={c.name} className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-4 text-center cursor-pointer hover:border-indigo-500/50 hover:bg-indigo-500/[0.08] transition">
+              <div className="text-xl mb-2">{c.icon}</div>
+              <p className="text-[11px] font-medium text-white/60">{c.name}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* How it works */}
-      <section className="px-8 py-16 border-b border-gray-100">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">How it works</h2>
-          <p className="text-sm text-gray-400">Get your store running in three simple steps.</p>
+      <section className="flex flex-col items-center px-6 py-16 border-b border-white/[0.07]">
+        <div className="text-center mb-9">
+          <p className="text-2xl font-bold mb-2">How it works</p>
+          <p className="text-sm text-white/40">Up and running in three steps.</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full max-w-xl">
           {[
-            { step: '1', title: 'Create your account',  desc: 'Register as a vendor in under a minute with your email and basic info.' },
-            { step: '2', title: 'Set up your store',    desc: 'Add your store name, logo and start listing products with photos.' },
-            { step: '3', title: 'Start selling',        desc: 'Go live instantly. Customers can find and buy from your store right away.' },
+            { step: '1', title: 'Create account', desc: 'Register as a vendor with your email in under a minute.' },
+            { step: '2', title: 'Set up store',   desc: 'Add your store name, logo and list your products.' },
+            { step: '3', title: 'Start selling',  desc: 'Go live instantly and start reaching customers.' },
           ].map((h) => (
             <div key={h.step} className="text-center">
-              <div className="w-9 h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-sm font-medium mx-auto mb-4">
-                {h.step}
-              </div>
-              <p className="text-sm font-medium text-gray-800 mb-2">{h.title}</p>
-              <p className="text-xs text-gray-400 leading-relaxed">{h.desc}</p>
+              <div className="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center text-sm font-bold mx-auto mb-4">{h.step}</div>
+              <p className="text-sm font-semibold mb-1.5">{h.title}</p>
+              <p className="text-xs text-white/40 leading-relaxed">{h.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* CTA */}
-      <section className="text-center px-6 py-20">
-        <h2 className="text-2xl font-semibold text-gray-900 mb-3">
-          Ready to launch your store?
-        </h2>
-        <p className="text-sm text-gray-400 mb-8">
-          Join hundreds of vendors already selling on ShopHub.
-        </p>
-        <div className="flex items-center justify-center gap-4 flex-wrap">
-          <Link
-            to="/register"
-            className="px-7 py-3 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-          >
+      <section className="flex flex-col items-center text-center px-6 py-20">
+        <p className="text-3xl font-bold mb-3">Ready to launch your store?</p>
+        <p className="text-sm text-white/40 mb-8">Join hundreds of vendors already selling on ShopHub.</p>
+        <div className="flex gap-3 justify-center flex-wrap">
+          <Link to="/register" className="px-8 py-3 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition no-underline">
             Create your store
           </Link>
-          <Link
-            to="/login"
-            className="px-7 py-3 border border-gray-200 text-gray-700 text-sm rounded-lg hover:bg-gray-50 transition"
-          >
+          <Link to="/login" className="px-8 py-3 bg-white/[0.06] text-white/70 border border-white/10 text-sm rounded-xl hover:bg-white/10 transition no-underline">
             Log in to your account
           </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="flex items-center justify-between px-8 py-5 border-t border-gray-100 flex-wrap gap-4">
-        <span className="text-sm font-medium text-blue-600">ShopHub</span>
-        <span className="text-xs text-gray-400">© 2025 ShopHub. All rights reserved.</span>
+      <footer className="flex items-center justify-between px-10 py-5 border-t border-white/[0.07] flex-wrap gap-3">
+        <span className="text-base font-bold text-indigo-400">ShopHub</span>
+        <span className="text-xs text-white/25">© 2025 ShopHub. All rights reserved.</span>
         <div className="flex gap-5">
-          <span className="text-xs text-gray-400 cursor-pointer hover:text-gray-600">Privacy</span>
-          <span className="text-xs text-gray-400 cursor-pointer hover:text-gray-600">Terms</span>
-          <span className="text-xs text-gray-400 cursor-pointer hover:text-gray-600">Contact</span>
+          {['Privacy','Terms','Contact'].map((l) => (
+            <span key={l} className="text-xs text-white/30 cursor-pointer hover:text-white/60 transition">{l}</span>
+          ))}
         </div>
       </footer>
 
