@@ -6,6 +6,8 @@ import VendorDashboard from './pages/VendorDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import CreateStore from './pages/vendor/CreateStore';
 import ProtectedRoute from './routes/ProtectedRoute';
+import AddProduct from './pages/vendor/AddProduct';
+import MyProducts from './pages/vendor/MyProducts';
 
 export default function App() {
   return (
@@ -40,6 +42,24 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+        path="/vendor/add-product"
+        element={
+          <ProtectedRoute allowedRoles={['vendor']}>
+            <AddProduct />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/vendor/products"
+        element={
+          <ProtectedRoute allowedRoles={['vendor']}>
+            <MyProducts />
+          </ProtectedRoute>
+        }
+        />
 
     </Routes>
   );
