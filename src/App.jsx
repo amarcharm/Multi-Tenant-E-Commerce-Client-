@@ -8,6 +8,8 @@ import CreateStore from './pages/vendor/CreateStore';
 import ProtectedRoute from './routes/ProtectedRoute';
 import AddProduct from './pages/vendor/AddProduct';
 import MyProducts from './pages/vendor/MyProducts';
+import Products     from './pages/Products';
+import ProductDetail from './pages/ProductDetail';
 
 export default function App() {
   return (
@@ -60,6 +62,9 @@ export default function App() {
           </ProtectedRoute>
         }
         />
+
+      <Route path="/products"     element={<Products />} />
+      <Route path="/products/:id" element={<ProductDetail />} />
 
     </Routes>
   );

@@ -21,11 +21,11 @@ export default function Home() {
       {/* Navbar */}
       <nav className="flex items-center justify-between px-10 py-5 border-b border-white/[0.07]">
         <span className="text-xl font-bold tracking-tight">ShopHub</span>
-        <div className="hidden md:flex gap-7">
-          {['Home','Stores','Products','About'].map((l) => (
-            <span key={l} className="text-sm text-white/50 cursor-pointer hover:text-white transition">{l}</span>
-          ))}
-        </div>
+        <Link to="/"         className="text-sm text-white/50 hover:text-white transition no-underline">Home</Link>
+        <Link to="/products" className="text-sm text-white/50 hover:text-white transition no-underline">Products</Link>
+        <span className="text-sm text-white/50 cursor-pointer hover:text-white transition">Stores</span>
+        <span className="text-sm text-white/50 cursor-pointer hover:text-white transition">About</span>
+        
         <div className="flex gap-3">
           {user ? (
             <button onClick={handleGetStarted} className="px-5 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition">
