@@ -10,6 +10,7 @@ import AddProduct from './pages/vendor/AddProduct';
 import MyProducts from './pages/vendor/MyProducts';
 import Products     from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
+import Cart from './pages/Cart';
 
 export default function App() {
   return (
@@ -65,6 +66,7 @@ export default function App() {
 
       <Route path="/products"     element={<Products />} />
       <Route path="/products/:id" element={<ProductDetail />} />
+      <Route path="/cart" element={<Cart />} />
 
     </Routes>
   );

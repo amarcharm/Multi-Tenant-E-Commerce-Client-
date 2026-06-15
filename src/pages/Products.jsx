@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import axiosInstance from '../api/axiosInstance';
 
 const CATEGORIES = ['All', 'Fashion', 'Electronics', 'Kitchen', 'Organic', 'Books', 'Sports', 'Other'];
 
 export default function Products() {
-  const [products,         setProducts]         = useState([]);
-  const [filtered,         setFiltered]         = useState([]);
-  const [loading,          setLoading]          = useState(true);
-  const [error,            setError]            = useState('');
-  const [search,           setSearch]           = useState('');
-  const [activeCategory,   setActiveCategory]   = useState('All');
+  const [products,       setProducts]       = useState([]);
+  const [filtered,       setFiltered]       = useState([]);
+  const [loading,        setLoading]        = useState(true);
+  const [error,          setError]          = useState('');
+  const [search,         setSearch]         = useState('');
+  const [activeCategory, setActiveCategory] = useState('All');
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   // Fetch all products on page load
   useEffect(() => {
@@ -29,6 +30,14 @@ export default function Products() {
     };
     fetchProducts();
   }, []);
+
+  // Read category from URL on load (e.g. /products?category=Fashion)
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get('category');
+    if (categoryFromUrl && CATEGORIES.includes(categoryFromUrl)) {
+      setActiveCategory(categoryFromUrl);
+    }
+  }, [searchParams]);
 
   // Filter whenever search or category changes
   useEffect(() => {
@@ -47,14 +56,39 @@ export default function Products() {
     setFiltered(result);
   }, [search, activeCategory, products]);
 
+  // Get category icon
+  const getIcon = (category) => {
+    const icons = {
+      Fashion: '👗', Electronics: '💻', Kitchen: '🍳',
+      Organic: '🌿', Books: '📚', Sports: '🏋️',
+    };
+    return icons[category] || '📦';
+  };
+
   return (
     <div className="min-h-screen bg-[#0f0e1a] px-6 py-10">
       <div className="max-w-6xl mx-auto">
 
         {/* Page header */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-white mb-2">Browse Products</h1>
-          <p className="text-sm text-white/40">Discover products from all stores on ShopHub</p>
+        <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-white mb-2">Browse Products</h1>
+            <p className="text-sm text-white/40">Discover products from all stores on ShopHub</p>
+          </div>
+          <div className="flex gap-3">
+            <Link
+              to="/"
+              className="px-4 py-2 border border-white/15 text-white/70 text-sm rounded-xl hover:bg-white/10 transition no-underline"
+            >
+              ← Home
+            </Link>
+            <Link
+              to="/cart"
+              className="px-4 py-2 border border-white/15 text-white/70 text-sm rounded-xl hover:bg-white/10 transition no-underline"
+            >
+              🛒 Cart
+            </Link>
+          </div>
         </div>
 
         {/* Search bar */}
@@ -100,7 +134,7 @@ export default function Products() {
         )}
 
         {/* Empty state */}
-        {!loading && filtered.length === 0 && (
+        {!loading && !error && filtered.length === 0 && (
           <div className="text-center py-20">
             <p className="text-4xl mb-4">🔍</p>
             <p className="text-white/30 text-sm">No products found</p>
@@ -133,14 +167,7 @@ export default function Products() {
               >
                 {/* Product image placeholder */}
                 <div className="w-full h-36 bg-white/[0.06] rounded-xl mb-4 flex items-center justify-center border border-white/[0.05]">
-                  <span className="text-4xl">
-                    {p.category === 'Fashion'     ? '👗' :
-                     p.category === 'Electronics' ? '💻' :
-                     p.category === 'Kitchen'     ? '🍳' :
-                     p.category === 'Organic'     ? '🌿' :
-                     p.category === 'Books'       ? '📚' :
-                     p.category === 'Sports'      ? '🏋️' : '📦'}
-                  </span>
+                  <span className="text-4xl">{getIcon(p.category)}</span>
                 </div>
 
                 {/* Category badge */}

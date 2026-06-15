@@ -1,9 +1,17 @@
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function Home() {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+    setCartCount(count);
+  }, []);
 
   const handleGetStarted = () => {
     if (user) {
@@ -21,14 +29,33 @@ export default function Home() {
       {/* Navbar */}
       <nav className="flex items-center justify-between px-10 py-5 border-b border-white/[0.07]">
         <span className="text-xl font-bold tracking-tight">ShopHub</span>
-        <Link to="/"         className="text-sm text-white/50 hover:text-white transition no-underline">Home</Link>
-        <Link to="/products" className="text-sm text-white/50 hover:text-white transition no-underline">Products</Link>
-        <span className="text-sm text-white/50 cursor-pointer hover:text-white transition">Stores</span>
-        <span className="text-sm text-white/50 cursor-pointer hover:text-white transition">About</span>
-        
-        <div className="flex gap-3">
+
+        <div className="hidden md:flex gap-7">
+          <Link to="/" className="text-sm text-white/50 hover:text-white transition no-underline">Home</Link>
+          <Link to="/products" className="text-sm text-white/50 hover:text-white transition no-underline">Products</Link>
+          <span className="text-sm text-white/50 cursor-pointer hover:text-white transition">Stores</span>
+          <span className="text-sm text-white/50 cursor-pointer hover:text-white transition">About</span>
+        </div>
+
+        <div className="flex gap-3 items-center">
+          {/* Cart icon */}
+          <Link
+            to="/cart"
+            className="relative px-3 py-2 border border-white/15 text-white/70 text-sm rounded-xl hover:bg-white/10 transition no-underline"
+          >
+            🛒
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-indigo-600 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+
           {user ? (
-            <button onClick={handleGetStarted} className="px-5 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition">
+            <button
+              onClick={handleGetStarted}
+              className="px-5 py-2 bg-indigo-600 text-white text-sm rounded-xl hover:bg-indigo-700 transition"
+            >
               Dashboard
             </button>
           ) : (
@@ -44,7 +71,7 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero — flex + items-center forces centering */}
+      {/* Hero */}
       <section className="flex flex-col items-center text-center px-6 pt-20 pb-16 border-b border-white/[0.07]">
         <div className="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 text-xs px-4 py-1.5 rounded-full mb-6">
           ✦ Multi-vendor marketplace platform
@@ -60,9 +87,9 @@ export default function Home() {
           <button onClick={handleGetStarted} className="px-8 py-3 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition">
             Start selling today
           </button>
-          <button className="px-8 py-3 bg-white/[0.06] text-white/70 border border-white/10 text-sm rounded-xl hover:bg-white/10 transition">
+          <Link to="/products" className="px-8 py-3 bg-white/[0.06] text-white/70 border border-white/10 text-sm rounded-xl hover:bg-white/10 transition no-underline">
             Browse stores →
-          </button>
+          </Link>
         </div>
         <div className="flex justify-center gap-14 mt-14 flex-wrap">
           {[
@@ -116,10 +143,14 @@ export default function Home() {
             { icon: '📚', name: 'Books' },
             { icon: '🏋️', name: 'Sports' },
           ].map((c) => (
-            <div key={c.name} className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-4 text-center cursor-pointer hover:border-indigo-500/50 hover:bg-indigo-500/[0.08] transition">
+            <Link
+              key={c.name}
+              to={`/products?category=${c.name}`}
+              className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-4 text-center cursor-pointer hover:border-indigo-500/50 hover:bg-indigo-500/[0.08] transition no-underline"
+            >
               <div className="text-xl mb-2">{c.icon}</div>
               <p className="text-[11px] font-medium text-white/60">{c.name}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
