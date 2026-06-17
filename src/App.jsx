@@ -14,6 +14,7 @@ import Cart from './pages/Cart';
 import Checkout    from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
 import MyOrders    from './pages/MyOrders';
+import VendorOrders from './pages/vendor/VendorOrders';
 
 export default function App() {
   return (
@@ -71,14 +72,14 @@ export default function App() {
       <Route path="/products/:id" element={<ProductDetail />} />
       <Route path="/cart" element={<Cart />} />
 
-      <Route
-          path="/checkout"
-          element={
-            <ProtectedRoute allowedRoles={['customer', 'vendor', 'superadmin']}>
-              <Checkout />
-            </ProtectedRoute>
-          }
-        />
+        <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute allowedRoles={['customer', 'vendor', 'superadmin']}>
+                <Checkout />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/orders/success"
@@ -94,6 +95,15 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['customer', 'vendor', 'superadmin']}>
                 <MyOrders />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/vendor/orders"
+            element={
+              <ProtectedRoute allowedRoles={['vendor', 'superadmin']}>
+                <VendorOrders />
               </ProtectedRoute>
             }
           />
