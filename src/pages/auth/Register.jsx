@@ -25,8 +25,14 @@ export default function Register() {
       dispatch(setCredentials({ token: res.data.token, user: res.data.user }));
       const userRole = res.data.user.role;
       if (userRole === 'superadmin') navigate('/admin/dashboard');
-      else if (userRole === 'vendor') navigate('/vendor/dashboard');
-      else navigate('/');
+      else if (userRole === 'vendor') {
+        if (res.data.user.approved) {
+          navigate('/vendor/dashboard');
+        } else {
+          alert('Your vendor account is pending approval. Please wait for admin approval.');
+          navigate('/');
+        }
+      } else navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed');
     } finally {

@@ -15,6 +15,11 @@ export default function ProtectedRoute({ children, allowedRoles }) {
     return <Navigate to="/" />;
   }
 
+  // Prevent unapproved vendors from accessing vendor-only pages
+  if (user.role === 'vendor' && user.approved === false) {
+    return <Navigate to="/" />;
+  }
+
   // All checks passed → show the page
   return children;
 }

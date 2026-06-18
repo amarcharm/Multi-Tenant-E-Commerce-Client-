@@ -34,6 +34,30 @@ export default function AdminVendors() {
     }
   };
 
+  const handleApprove = async (id) => {
+    setDeleting(id);
+    try {
+      const res = await axiosInstance.patch(`/admin/vendors/${id}/approve`);
+      setVendors((prev) => prev.map((v) => v._id === id ? res.data.vendor : v));
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to approve vendor');
+    } finally {
+      setDeleting(null);
+    }
+  };
+
+  const handleReject = async (id) => {
+    setDeleting(id);
+    try {
+      const res = await axiosInstance.patch(`/admin/vendors/${id}/reject`);
+      setVendors((prev) => prev.map((v) => v._id === id ? res.data.vendor : v));
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to reject vendor');
+    } finally {
+      setDeleting(null);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0f0e1a] px-6 py-10">
       <div className="max-w-4xl mx-auto">
@@ -87,14 +111,35 @@ export default function AdminVendors() {
                   </div>
                 </div>
 
-                {/* Delete */}
-                <button
-                  onClick={() => handleDelete(vendor._id)}
-                  disabled={deleting === vendor._id}
-                  className="px-4 py-2 bg-red-600/10 text-red-400 border border-red-500/20 text-xs rounded-xl hover:bg-red-600/20 transition disabled:opacity-40"
-                >
-                  {deleting === vendor._id ? 'Deleting...' : 'Delete vendor'}
-                </button>
+                <div className="flex flex-wrap gap-2 items-center">
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${vendor.approved ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/20' : 'bg-yellow-500/15 text-yellow-300 border border-yellow-500/20'}`}>
+                    {vendor.approved ? 'Approved' : 'Pending'}
+                  </span>
+                  {!vendor.approved ? (
+                    <button
+                      onClick={() => handleApprove(vendor._id)}
+                      disabled={deleting === vendor._id}
+                      className="px-4 py-2 bg-emerald-600/10 text-emerald-300 border border-emerald-500/20 text-xs rounded-xl hover:bg-emerald-600/20 transition disabled:opacity-40"
+                    >
+                      {deleting === vendor._id ? 'Approving...' : 'Approve'}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleReject(vendor._id)}
+                      disabled={deleting === vendor._id}
+                      className="px-4 py-2 bg-yellow-600/10 text-yellow-300 border border-yellow-500/20 text-xs rounded-xl hover:bg-yellow-600/20 transition disabled:opacity-40"
+                    >
+                      {deleting === vendor._id ? 'Revoking...' : 'Revoke'}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleDelete(vendor._id)}
+                    disabled={deleting === vendor._id}
+                    className="px-4 py-2 bg-red-600/10 text-red-400 border border-red-500/20 text-xs rounded-xl hover:bg-red-600/20 transition disabled:opacity-40"
+                  >
+                    {deleting === vendor._id ? 'Deleting...' : 'Delete vendor'}
+                  </button>
+                </div>
               </div>
             ))}
           </div>
