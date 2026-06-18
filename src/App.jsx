@@ -15,6 +15,9 @@ import Checkout    from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
 import MyOrders    from './pages/MyOrders';
 import VendorOrders from './pages/vendor/VendorOrders';
+import AdminStores  from './pages/admin/AdminStores';
+import AdminVendors from './pages/admin/AdminVendors';
+import AdminOrders  from './pages/admin/AdminOrders';
 
 export default function App() {
   return (
@@ -104,6 +107,42 @@ export default function App() {
             element={
               <ProtectedRoute allowedRoles={['vendor', 'superadmin']}>
                 <VendorOrders />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={['superadmin']}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/stores"
+            element={
+              <ProtectedRoute allowedRoles={['superadmin']}>
+                <AdminStores />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/vendors"
+            element={
+              <ProtectedRoute allowedRoles={['superadmin']}>
+                <AdminVendors />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/orders"
+            element={
+              <ProtectedRoute allowedRoles={['superadmin']}>
+                <AdminOrders />
               </ProtectedRoute>
             }
           />
