@@ -78,15 +78,26 @@ export default function ProductDetail() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
 
             {/* Image placeholder */}
-            <div className="w-full h-56 bg-white/[0.06] rounded-xl flex items-center justify-center border border-white/[0.05]">
-              <span className="text-6xl">
-                {product.category === 'Fashion'     ? '👗' :
-                 product.category === 'Electronics' ? '💻' :
-                 product.category === 'Kitchen'     ? '🍳' :
-                 product.category === 'Organic'     ? '🌿' :
-                 product.category === 'Books'       ? '📚' :
-                 product.category === 'Sports'      ? '🏋️' : '📦'}
-              </span>
+            {/* Product image — real or emoji fallback */}
+            <div className="w-full h-56 bg-white/[0.06] rounded-xl overflow-hidden border border-white/[0.05]">
+              {product.images && product.images.length > 0 ? (
+                <img
+                  src={product.images[0]}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="text-6xl">
+                    {product.category === 'Fashion'     ? '👗' :
+                    product.category === 'Electronics' ? '💻' :
+                    product.category === 'Kitchen'     ? '🍳' :
+                    product.category === 'Organic'     ? '🌿' :
+                    product.category === 'Books'       ? '📚' :
+                    product.category === 'Sports'      ? '🏋️' : '📦'}
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Product info */}

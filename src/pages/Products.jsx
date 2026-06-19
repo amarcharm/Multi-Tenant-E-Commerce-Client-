@@ -165,9 +165,20 @@ export default function Products() {
                 onClick={() => navigate(`/products/${p._id}`)}
                 className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-5 cursor-pointer hover:border-indigo-500/50 hover:bg-white/[0.06] transition group"
               >
-                {/* Product image placeholder */}
-                <div className="w-full h-36 bg-white/[0.06] rounded-xl mb-4 flex items-center justify-center border border-white/[0.05]">
-                  <span className="text-4xl">{getIcon(p.category)}</span>
+
+                {/* Product image — real or emoji fallback */}
+                <div className="w-full h-36 bg-white/[0.06] rounded-xl mb-4 overflow-hidden border border-white/[0.05]">
+                  {p.images && p.images.length > 0 ? (
+                    <img
+                      src={p.images[0]}
+                      alt={p.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-4xl">{getIcon(p.category)}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Category badge */}

@@ -2,7 +2,10 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axiosInstance from '../../api/axiosInstance';
 
-const CATEGORIES = ['Fashion', 'Electronics', 'Kitchen', 'Organic', 'Books', 'Sports', 'Other'];
+const CATEGORIES = [
+  'Fashion', 'Electronics', 'Kitchen',
+  'Organic', 'Books', 'Sports', 'Other',
+];
 
 export default function AddProduct() {
   const [form, setForm] = useState({
@@ -12,15 +15,25 @@ export default function AddProduct() {
     category:    'Other',
     description: '',
   });
+  const [image,   setImage]   = useState(null);
+  const [preview, setPreview] = useState(null); // image preview URL
   const [error,   setError]   = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  // Single handler for all inputs
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // When vendor picks an image — show preview
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setPreview(URL.createObjectURL(file)); // creates a local preview URL
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -30,12 +43,19 @@ export default function AddProduct() {
     setLoading(true);
 
     try {
-      await axiosInstance.post('/products/add', {
-        name:        form.name,
-        price:       Number(form.price),
-        stock:       Number(form.stock),
-        category:    form.category,
-        description: form.description,
+      // Use FormData instead of JSON because we are sending a file
+      const formData = new FormData();
+      formData.append('name',        form.name);
+      formData.append('price',       form.price);
+      formData.append('stock',       form.stock);
+      formData.append('category',    form.category);
+      formData.append('description', form.description);
+      if (image) {
+        formData.append('image', image); // 'image' must match upload.single('image') in routes
+      }
+
+      await axiosInstance.post('/products/add', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       setSuccess('Product added successfully!');
@@ -60,20 +80,18 @@ export default function AddProduct() {
             ← Back to dashboard
           </Link>
           <h1 className="text-2xl font-bold text-white">Add a product</h1>
-          <p className="text-sm text-white/40 mt-1">Fill in the details to list a new product in your store</p>
+          <p className="text-sm text-white/40 mt-1">
+            Fill in the details to list a new product in your store
+          </p>
         </div>
 
-        {/* Card */}
         <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-7">
 
-          {/* Error */}
           {error && (
             <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-3 rounded-xl mb-5">
               {error}
             </div>
           )}
-
-          {/* Success */}
           {success && (
             <div className="bg-green-500/10 border border-green-500/20 text-green-400 text-sm px-4 py-3 rounded-xl mb-5">
               {success}
@@ -81,6 +99,51 @@ export default function AddProduct() {
           )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+
+            {/* Image upload */}
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs text-white/40 font-medium">
+                Product image (optional)
+              </label>
+
+              {/* Preview box */}
+              <div
+                onClick={() => document.getElementById('imageInput').click()}
+                className="w-full h-40 bg-white/[0.03] border-2 border-dashed border-white/10 rounded-xl flex items-center justify-center cursor-pointer hover:border-indigo-500/50 transition overflow-hidden"
+              >
+                {preview ? (
+                  <img
+                    src={preview}
+                    alt="preview"
+                    className="w-full h-full object-cover rounded-xl"
+                  />
+                ) : (
+                  <div className="text-center">
+                    <p className="text-3xl mb-2">📷</p>
+                    <p className="text-xs text-white/30">Click to upload image</p>
+                    <p className="text-xs text-white/20 mt-1">JPG, PNG, WEBP up to 5MB</p>
+                  </div>
+                )}
+              </div>
+
+              <input
+                id="imageInput"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+
+              {preview && (
+                <button
+                  type="button"
+                  onClick={() => { setImage(null); setPreview(null); }}
+                  className="text-xs text-red-400/60 hover:text-red-400 transition text-left"
+                >
+                  Remove image
+                </button>
+              )}
+            </div>
 
             {/* Product name */}
             <div className="flex flex-col gap-1.5">
@@ -96,7 +159,7 @@ export default function AddProduct() {
               />
             </div>
 
-            {/* Price and Stock side by side */}
+            {/* Price and stock */}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
                 <label className="text-xs text-white/40 font-medium">Price (₹)</label>
@@ -160,7 +223,7 @@ export default function AddProduct() {
               disabled={loading}
               className="w-full py-3 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-1"
             >
-              {loading ? 'Adding product...' : 'Add product'}
+              {loading ? 'Uploading and adding product...' : 'Add product'}
             </button>
 
           </form>
